@@ -1,0 +1,29 @@
+# Environment variables (never commit secrets)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Uploaded files (local storage)
+uploads/images/*
+uploads/files/*
+!uploads/images/.gitkeep
+!uploads/files/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

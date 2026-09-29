@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Flask File Storage Demo — upload, view and delete files with a pluggable local/Supabase storage backend.">
+  <title>File Storage Demo</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Toast container (notifications appear here) -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="container">
+
+    <!-- ═══ Header ═══ -->
+    <header class="header">
+      <div class="header__icon">☁️</div>
+      <h1 class="header__title">File Storage Demo</h1>
+      <p class="header__subtitle">Upload, view &amp; manage files with pluggable storage</p>
+
+      {% if storage_type == 'supabase' %}
+        <div class="storage-badge storage-badge--supabase">
+          <span class="storage-badge__dot"></span>
+          Supabase Storage
+        </div>
+      {% else %}
+        <div class="storage-badge storage-badge--local">
+          <span class="storage-badge__dot"></span>
+          Local Storage
+        </div>
+      {% endif %}
+    </header>
+
+    <!-- ═══ Upload Card ═══ -->
+    <section class="card">
+      <h2 class="card__title">
+        <span class="card__title-icon">📤</span>
+        Upload File
+      </h2>
+
+      <!-- Drop zone -->
+      <div class="upload-area" id="drop-area">
+        <div class="upload-area__icon">📁</div>
+        <p class="upload-area__text">Drag &amp; drop a file here, or <strong>click to browse</strong></p>
+        <p class="upload-area__hint">Images (jpg, png, webp, gif) &bull; Documents (pdf, txt, csv, zip, doc, docx) &bull; Max 16 MB</p>
+        <input type="file" class="upload-area__input" id="file-input"
+               accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.txt,.csv,.zip,.doc,.docx">
+
+        <!-- Selected file strip -->
+        <div class="upload-area__selected" id="selected-info">
+          <span class="upload-area__selected-name" id="selected-name"></span>
+          <span class="upload-area__selected-size" id="selected-size"></span>
+          <button class="upload-area__selected-clear" id="clear-selected" title="Remove">&times;</button>
+        </div>
+      </div>
+
+      <!-- Upload button -->
+      <button class="upload-btn" id="upload-btn" disabled>
+        <span id="upload-btn-text">Upload</span>
+      </button>
+
+      <!-- Progress bar -->
+      <div class="progress-container" id="progress-container">
+        <div class="progress-bar">
+          <div class="progress-bar__fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-text" id="progress-text">0%</p>
+      </div>
+    </section>
+
+    <!-- ═══ Files Card ═══ -->
+    <section class="card">
+      <h2 class="card__title">
+        <span class="card__title-icon">📋</span>
+        Uploaded Files
+        <span style="margin-left:auto; font-weight:400; font-size:0.82rem; color:var(--text-muted);" id="file-count">0</span>
+      </h2>
+
+      <div class="file-grid" id="file-grid">
+        <!-- Populated by app.js -->
+        <div class="empty-state">
+          <div class="empty-state__icon">📂</div>
+          <p class="empty-state__text">No files uploaded yet. Drop a file above to get started.</p>
+        </div>
+      </div>
+
+      <!-- Info bar -->
+      <div class="info-bar">
+        <span>💾 Storage: <strong>{{ 'Supabase Storage' if storage_type == 'supabase' else 'Local (/uploads)' }}</strong></span>
+        <span>📏 Max size: <strong>16 MB</strong></span>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
